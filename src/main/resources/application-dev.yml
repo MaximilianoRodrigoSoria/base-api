@@ -1,0 +1,46 @@
+# ============================
+# Development Profile Configuration
+# ============================
+
+# ============================
+# H2 Database Configuration
+# ============================
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# ============================
+# Actuator Configuration
+# ============================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,loggers,env,beans,configprops
+  endpoint:
+    health:
+      show-details: always
+
+# ============================
+# Logging Configuration
+# ============================
+logging:
+  level:
+    root: INFO
+    com.ar.laboratory: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
