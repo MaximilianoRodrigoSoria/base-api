@@ -1,0 +1,5 @@
+{
+  "cuit": "20-{{request.query.dni}}-7",
+  "dni": "{{request.query.dni}}",
+  "genero": "H"
+}

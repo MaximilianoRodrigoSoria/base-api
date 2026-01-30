@@ -79,6 +79,12 @@ app:
   version: '@project.version@'
 
 # ============================
+# WireMock Configuration
+# ============================
+wiremock:
+  url: http://localhost:8090
+
+# ============================
 # Logging Configuration
 # ============================
 logging:

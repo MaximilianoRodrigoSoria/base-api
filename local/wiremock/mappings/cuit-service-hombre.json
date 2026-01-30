@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/api/cuit",
+    "queryParameters": {
+      "dni": {
+        "matches": "[0-9]{7,8}"
+      },
+      "genero": {
+        "equalTo": "H"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "cuit-hombre.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "transformers": ["response-template"]
+  }
+}
