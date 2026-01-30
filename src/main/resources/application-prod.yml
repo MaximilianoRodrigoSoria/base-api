@@ -2,22 +2,10 @@
 # Production Profile Configuration
 # ============================
 
-# ============================
-# Actuator Configuration
-# ============================
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-  endpoint:
-    health:
-      show-details: never
-
-# ============================
-# PostgreSQL Database Configuration
-# ============================
 spring:
+  # ============================
+  # PostgreSQL Database Configuration
+  # ============================
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/baseapi}
     username: ${DATABASE_USER:admin}
@@ -44,6 +32,32 @@ spring:
   h2:
     console:
       enabled: false
+  
+  # ============================
+  # Redis Configuration
+  # ============================
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  
+  cache:
+    type: redis
+    redis:
+      time-to-live: 1800000
+
+# ============================
+# Actuator Configuration
+# ============================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
 
 # ============================
 # Logging Configuration
@@ -52,17 +66,3 @@ logging:
   level:
     root: WARN
     com.ar.laboratory: INFO
-
-# ============================
-# Redis Configuration (Prod)
-# ============================
-spring:
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
-  cache:
-    redis:
-      time-to-live: 1800000
-
