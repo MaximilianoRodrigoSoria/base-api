@@ -17,8 +17,29 @@ services:
     networks:
       - base-api-network
 
+  postgres:
+    image: postgres:16-alpine
+    container_name: base-api-postgres
+    environment:
+      POSTGRES_DB: baseapi
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1q2w3e
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d baseapi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - base-api-network
+
 volumes:
   redis-data:
+    driver: local
+  postgres-data:
     driver: local
 
 networks:
