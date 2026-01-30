@@ -2,6 +2,7 @@ package com.ar.laboratory.baseapi.application.service;
 
 import com.ar.laboratory.baseapi.domain.model.ExampleStatus;
 import com.ar.laboratory.baseapi.domain.ports.in.ExampleStatusUseCase;
+import com.ar.laboratory.baseapi.domain.ports.out.CachePort;
 import com.ar.laboratory.baseapi.domain.ports.out.ExampleRepositoryPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import java.util.Optional;
 /**
  * Service implementation for ExampleStatus use cases.
  * This class implements the business logic defined in ExampleStatusUseCase.
+ * Integrates Redis caching for improved performance.
  */
 @Service
 public class ExampleStatusService implements ExampleStatusUseCase {
@@ -20,9 +22,12 @@ public class ExampleStatusService implements ExampleStatusUseCase {
     private static final Logger logger = LoggerFactory.getLogger(ExampleStatusService.class);
     
     private final ExampleRepositoryPort exampleRepositoryPort;
+    private final CachePort<ExampleStatus> cachePort;
 
-    public ExampleStatusService(ExampleRepositoryPort exampleRepositoryPort) {
+    public ExampleStatusService(ExampleRepositoryPort exampleRepositoryPort,
+                               CachePort<ExampleStatus> cachePort) {
         this.exampleRepositoryPort = exampleRepositoryPort;
+        this.cachePort = cachePort;
     }
 
     @Override
@@ -34,10 +39,20 @@ public class ExampleStatusService implements ExampleStatusUseCase {
             return Optional.empty();
         }
         
+        // Try to get from cache first
+        Optional<ExampleStatus> cached = cachePort.get(id);
+        if (cached.isPresent()) {
+            logger.debug("Found example status in cache: {}", cached.get().getName());
+            return cached;
+        }
+        
+        // If not in cache, get from repository
         Optional<ExampleStatus> result = exampleRepositoryPort.findById(id);
         
         if (result.isPresent()) {
-            logger.debug("Found example status: {}", result.get().getName());
+            logger.debug("Found example status in repository: {}", result.get().getName());
+            // Store in cache for future requests
+            cachePort.put(id, result.get());
         } else {
             logger.debug("Example status not found for id: {}", id);
         }

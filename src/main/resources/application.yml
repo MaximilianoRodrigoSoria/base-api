@@ -4,6 +4,32 @@
 spring:
   application:
     name: base-api
+  
+  # H2 Console Configuration
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  # Redis Configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+  
+  # Cache Configuration
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000
+      cache-null-values: false
 
 # ============================
 # Server Configuration
@@ -53,13 +79,6 @@ app:
   version: '@project.version@'
 
 # ============================
-# H2 Console Configuration
-# ============================
-spring.h2.console:
-  enabled: true
-  path: /h2-console
-
-# ============================
 # Logging Configuration
 # ============================
 logging:
@@ -79,4 +98,3 @@ springdoc:
     operations-sorter: method
     tags-sorter: alpha
   show-actuator: false
-
