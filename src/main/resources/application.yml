@@ -39,10 +39,18 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: Base API - Spring Boot Template
-    version: 0.0.1-SNAPSHOT
+    description: Base API - Spring Boot Template with Hexagonal Architecture
+    version: '@project.version@'
     java:
-      version: 25
+      version: '@java.version@'
+
+# ============================
+# Application Custom Properties
+# ============================
+app:
+  name: Base API
+  description: Base API - Spring Boot Template with Hexagonal Architecture, OpenAPI/Swagger integration, and clean architecture principles
+  version: '@project.version@'
 
 # ============================
 # H2 Console Configuration
@@ -58,4 +66,17 @@ logging:
   level:
     root: INFO
     com.ar.laboratory: INFO
+
+# ============================
+# SpringDoc OpenAPI Configuration
+# ============================
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: false
 
