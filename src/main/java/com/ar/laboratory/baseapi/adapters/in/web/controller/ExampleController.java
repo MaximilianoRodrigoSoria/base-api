@@ -50,6 +50,7 @@ public class ExampleController {
                     .nombre(request.getNombre())
                     .apellido(request.getApellido())
                     .dni(request.getDni())
+                    .genero(request.getGenero())
                     .build();
             
             Example createdExample = createExampleUseCase.createExample(example);
@@ -95,6 +96,8 @@ public class ExampleController {
                 .nombre(example.getNombre())
                 .apellido(example.getApellido())
                 .dni(example.getDni())
+                .genero(example.getGenero())
+                .cuit(example.getCuit())
                 .createdAt(example.getCreatedAt())
                 .updatedAt(example.getUpdatedAt())
                 .build();

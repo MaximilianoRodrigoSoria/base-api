@@ -2,6 +2,7 @@ package com.ar.laboratory.baseapi.application.service;
 
 import com.ar.laboratory.baseapi.domain.model.Example;
 import com.ar.laboratory.baseapi.domain.ports.in.CreateExampleUseCase;
+import com.ar.laboratory.baseapi.domain.ports.out.CuitServicePort;
 import com.ar.laboratory.baseapi.domain.ports.out.ExamplePersistencePort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,12 @@ public class ExampleService implements CreateExampleUseCase {
     private static final Logger logger = LoggerFactory.getLogger(ExampleService.class);
     
     private final ExamplePersistencePort examplePersistencePort;
+    private final CuitServicePort cuitServicePort;
 
-    public ExampleService(ExamplePersistencePort examplePersistencePort) {
+    public ExampleService(ExamplePersistencePort examplePersistencePort,
+                         CuitServicePort cuitServicePort) {
         this.examplePersistencePort = examplePersistencePort;
+        this.cuitServicePort = cuitServicePort;
     }
 
     @Override
@@ -35,6 +39,11 @@ public class ExampleService implements CreateExampleUseCase {
             logger.warn("Example with DNI {} already exists", example.getDni());
             throw new IllegalArgumentException("Ya existe un ejemplo con el DNI: " + example.getDni());
         }
+        
+        // Calculate CUIT using external service
+        String cuit = cuitServicePort.getCuit(example.getDni(), example.getGenero());
+        example.setCuit(cuit);
+        logger.info("CUIT calculated: {}", cuit);
         
         // Set timestamps
         LocalDateTime now = LocalDateTime.now();

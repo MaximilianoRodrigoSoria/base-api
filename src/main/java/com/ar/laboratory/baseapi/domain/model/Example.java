@@ -24,6 +24,8 @@ public class Example implements Serializable {
     private String nombre;
     private String apellido;
     private String dni;
+    private String genero;
+    private String cuit;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

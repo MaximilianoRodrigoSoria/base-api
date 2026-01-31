@@ -29,4 +29,8 @@ public class CreateExampleRequest {
     @NotBlank(message = "El DNI no puede estar vacío")
     @Pattern(regexp = "^[0-9]{7,8}$", message = "El DNI debe tener 7 u 8 dígitos numéricos")
     private String dni;
+    
+    @NotBlank(message = "El género no puede estar vacío")
+    @Pattern(regexp = "^[HM]$", message = "El género debe ser H (Hombre) o M (Mujer)")
+    private String genero;
 }
